@@ -1,9 +1,18 @@
+use simplelog::{Config, WriteLogger, LevelFilter};
+use std::fs::File;
+
 use std::env;
 mod cesar;
 
+
+
 fn main() {
+    let file = File::create("app.log").expect("Unable to create log file"); 
+    WriteLogger::init(LevelFilter::Info, Config::default(), file) .expect("Unable to initialize file logger");
     // More info when there are errors.
     env::set_var("RUST_BACKTRACE", "full");
+    env::set_var("RUST_LOG", "egg=debug");
+    env_logger::init();
 
     // If command line flag -c is present, run cesar tests.
     let args: Vec<String> = std::env::args().collect();
